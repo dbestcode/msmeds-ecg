@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Make header for 12 lead list
+echo "Delete all HTML file in this directory?(y/n)"
+read a
+if [ $a = 'y' ]
+then
+    rm -v *.html
+    echo "Removed all HTML files"
+else
+    "All old files will remain"
+fi
+
+echo "rebuilding 12 leads..."
+cat << eof > "list.html"
+    <!DOCTYPE html>
+    <!--
+    Files Last Updated:
+    `date`
+    -->
+    <html>
+    <head>
+    <title>"$file"</title>
+    <link rel="stylesheet" href="../css/main.css"></head>
+    <body>
+    <a href="../index.html" class='button'>HOME</a></ br>
+    <h1 style="text-align:center;">12 Lead Orders</h1><h1> Patients:</h1>
+eof
+
+# find all pdfs and make a page for each one and add a link in the list page
+for file in *.pdf
+do
+    echo "Found $file ..."
+    echo "<div class='grid-item'><a href='${file/%pdf/html}' class='button'>${file%.*}</a></div>" >> "list.html"
+# Make page for 12 lead pdf
+    cat << eof > "${file/%pdf/html}"
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>"$file"</title>
+    <link rel="stylesheet" href="../css/main.css">
+    </head>
+    <body>
+    <div class="grid-item">
+    <a href="../index.html" class='button'>HOME</a>
+    <a href="../send.html" class='button'>SEND RESULTS TO PROVIDER</a>
+    "<iframe src=$file width='100%' height='700px'></iframe>"
+    </div></body>
+    </html>
+eof
+done
+
+cat << eof >> "list.html"
+</body>
+</html>
+eof
+exit 0
