@@ -2,10 +2,14 @@
   display: grid;
   grid-template-columns: auto auto auto;
   background-color: #111111;
-  padding: 10px;
+  padding: 5px;
+  column-gap: 10px;
+  row-gap: 10px;
+  
 }
 
 .grid-item {
+  border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.8);
   color:black;
   border: 1px solid rgba(13, 13, 13, 0.8);
